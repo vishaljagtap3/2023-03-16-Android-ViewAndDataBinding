@@ -8,15 +8,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bitcodetech.fragments5.databinding.ContactDetailsFragmentBinding
 
 class ContactDetailsFragment : Fragment() {
 
-    private lateinit var imgContact: ImageView
-    private lateinit var txtContactName : TextView
-    private lateinit var txtContactNumber : TextView
-    private lateinit var btnDeleteContact : Button
-    private lateinit var btnUpdateContact : Button
-
+    private lateinit var binding : ContactDetailsFragmentBinding
     private var contact: Contact? = null
 
     interface OnContactActionListener {
@@ -33,17 +29,20 @@ class ContactDetailsFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.contact_details_fragment, null)
+        //binding = ContactDetailsFragmentBinding.inflate(inflater)
+        binding = ContactDetailsFragmentBinding.bind(view)
 
-        initViews(view)
+
         initData()
         setupListeners()
 
         return view
+        //return binding.root
     }
 
     private fun setupListeners() {
 
-        btnDeleteContact.setOnClickListener {
+        binding.btnDeleteContact.setOnClickListener {
             onContactActionListener?.onContactDelete(
                 contact!!
             )
@@ -62,18 +61,15 @@ class ContactDetailsFragment : Fragment() {
         if(arguments != null && requireArguments().containsKey("contact") ) {
             contact = requireArguments().getSerializable("contact") as Contact
 
-            imgContact.setImageResource(contact!!.imageId)
-            txtContactName.text = contact!!.name
-            txtContactNumber.text = contact!!.number
+            binding.contact = contact
+            binding.imgContact.setImageResource(contact!!.imageId)
+
+            /*binding.imgContact.setImageResource(contact!!.imageId)
+            binding.txtContactName.text = contact!!.name
+            binding.txtContactNumber.text = contact!!.number*/
         }
     }
 
-    private fun initViews(view : View) {
-        imgContact = view.findViewById(R.id.imgContact)
-        txtContactName = view.findViewById(R.id.txtContactName)
-        txtContactNumber = view.findViewById(R.id.txtContactNumber)
-        btnDeleteContact = view.findViewById(R.id.btnDeleteContact)
-        btnUpdateContact = view.findViewById(R.id.btnUpdateContact)
-    }
+
 
 }
